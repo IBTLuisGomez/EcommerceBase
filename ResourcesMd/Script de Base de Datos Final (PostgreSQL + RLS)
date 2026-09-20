@@ -1,0 +1,158 @@
+-- V1__init_schema.sql
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+------------------------------------------------------------
+-- TENANTS
+------------------------------------------------------------
+CREATE TABLE tenants (
+    id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name            VARCHAR(255) NOT NULL,
+    subdomain       VARCHAR(100) UNIQUE NOT NULL,
+    custom_domain   VARCHAR(255),
+    logo_url        TEXT,
+    theme_config    JSONB NOT NULL DEFAULT '{
+        "primaryColor": "#2563eb",
+        "secondaryColor": "#1e40af",
+        "accentColor": "#f59e0b",
+        "backgroundColor": "#ffffff",
+        "textColor": "#111827",
+        "fontFamily": "Inter, system-ui, sans-serif"
+    }',
+    status          VARCHAR(30) NOT NULL DEFAULT 'ACTIVE',
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+------------------------------------------------------------
+-- CATEGORIES
+------------------------------------------------------------
+CREATE TABLE categories (
+    id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    tenant_id       UUID NOT NULL REFERENCES tenants(id),
+    parent_id       UUID REFERENCES categories(id),
+    name            VARCHAR(255) NOT NULL,
+    slug            VARCHAR(255) NOT NULL,
+    description     TEXT,
+    image_url       TEXT,
+    position        INT DEFAULT 0,
+    is_active       BOOLEAN DEFAULT TRUE,
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    UNIQUE (tenant_id, slug)
+);
+
+CREATE INDEX idx_categories_tenant ON categories(tenant_id);
+
+------------------------------------------------------------
+-- PRODUCTS
+------------------------------------------------------------
+CREATE TABLE products (
+    id                  UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    tenant_id           UUID NOT NULL REFERENCES tenants(id),
+    category_id         UUID REFERENCES categories(id),
+    name                VARCHAR(255) NOT NULL,
+    slug                VARCHAR(255) NOT NULL,
+    description         TEXT,
+    price               NUMERIC(12,2) NOT NULL,
+    compare_at_price    NUMERIC(12,2),
+    sku                 VARCHAR(100),
+    stock               INT NOT NULL DEFAULT 0,
+    track_inventory     BOOLEAN DEFAULT TRUE,
+    images              JSONB DEFAULT '[]',
+    attributes          JSONB DEFAULT '{}',
+    is_active           BOOLEAN DEFAULT TRUE,
+    is_featured         BOOLEAN DEFAULT FALSE,
+    created_at          TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at          TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    UNIQUE (tenant_id, slug)
+);
+
+CREATE INDEX idx_products_tenant ON products(tenant_id);
+CREATE INDEX idx_products_category ON products(category_id);
+CREATE INDEX idx_products_featured ON products(tenant_id, is_featured) WHERE is_featured = TRUE;
+
+------------------------------------------------------------
+-- CARTS
+------------------------------------------------------------
+CREATE TABLE carts (
+    id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    tenant_id       UUID NOT NULL REFERENCES tenants(id),
+    customer_id     UUID,
+    session_id      VARCHAR(255),
+    currency        VARCHAR(3) DEFAULT 'MXN',
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE cart_items (
+    id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    cart_id         UUID NOT NULL REFERENCES carts(id) ON DELETE CASCADE,
+    product_id      UUID NOT NULL REFERENCES products(id),
+    quantity        INT NOT NULL CHECK (quantity > 0),
+    unit_price      NUMERIC(12,2) NOT NULL,
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+------------------------------------------------------------
+-- ORDERS
+------------------------------------------------------------
+CREATE TYPE order_status AS ENUM (
+    'PENDING', 'PAID', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELLED', 'REFUNDED'
+);
+
+CREATE TABLE orders (
+    id                  UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    tenant_id           UUID NOT NULL REFERENCES tenants(id),
+    customer_id         UUID,
+    order_number        VARCHAR(50) NOT NULL,
+    status              order_status NOT NULL DEFAULT 'PENDING',
+    currency            VARCHAR(3) DEFAULT 'MXN',
+    subtotal            NUMERIC(12,2) NOT NULL,
+    discount            NUMERIC(12,2) DEFAULT 0,
+    shipping_cost       NUMERIC(12,2) DEFAULT 0,
+    tax                 NUMERIC(12,2) DEFAULT 0,
+    total               NUMERIC(12,2) NOT NULL,
+    shipping_address    JSONB,
+    billing_address     JSONB,
+    notes               TEXT,
+    created_at          TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at          TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    UNIQUE (tenant_id, order_number)
+);
+
+CREATE TABLE order_items (
+    id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    order_id        UUID NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+    product_id      UUID NOT NULL,
+    product_name    VARCHAR(255) NOT NULL,
+    sku             VARCHAR(100),
+    quantity        INT NOT NULL,
+    unit_price      NUMERIC(12,2) NOT NULL,
+    total_price     NUMERIC(12,2) NOT NULL
+);
+
+------------------------------------------------------------
+-- ROW LEVEL SECURITY
+------------------------------------------------------------
+ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
+ALTER TABLE products ENABLE ROW LEVEL SECURITY;
+ALTER TABLE carts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE cart_items ENABLE ROW LEVEL SECURITY;
+ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+ALTER TABLE order_items ENABLE ROW LEVEL SECURITY;
+
+-- Política de aislamiento por tenant
+CREATE POLICY tenant_isolation_categories ON categories
+    USING (tenant_id = current_setting('app.current_tenant', true)::uuid);
+
+CREATE POLICY tenant_isolation_products ON products
+    USING (tenant_id = current_setting('app.current_tenant', true)::uuid);
+
+CREATE POLICY tenant_isolation_carts ON carts
+    USING (tenant_id = current_setting('app.current_tenant', true)::uuid);
+
+CREATE POLICY tenant_isolation_orders ON orders
+    USING (tenant_id = current_setting('app.current_tenant', true)::uuid);
+
+-- Nota: cart_items y order_items se protegen a través de la relación con carts/orders

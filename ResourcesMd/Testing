@@ -1,0 +1,17 @@
+Testing
+
+Unit: JUnit 5 + Mockito (dominio puro).
+Integration: Testcontainers (PostgreSQL + Redis).
+Contract: Spring Cloud Contract (opcional).
+E2E: Playwright (frontend) + RestAssured.
+
+Analytics / Dashboard
+
+Eventos de dominio → Kafka/RabbitMQ → ClickHouse o PostgreSQL materializado.
+Dashboard con Metabase o Superset (open source).
+Métricas clave:
+Ventas por día/mes
+Productos más vendidos
+Tasa de abandono de carrito
+Conversión por tenant
+Revenue por tenant

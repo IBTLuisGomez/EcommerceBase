@@ -1,0 +1,14 @@
+-- Multi-tenant
+tenants (id, name, subdomain, logo_url, theme_config jsonb, ...)
+
+-- Catálogo
+categories (id, tenant_id, name, slug, parent_id, ...)
+products (id, tenant_id, name, slug, price, stock, images jsonb, ...)
+
+-- Carrito
+carts (id, tenant_id, customer_id, ...)
+cart_items (id, cart_id, product_id, quantity, unit_price, ...)
+
+-- Pedidos
+orders (id, tenant_id, customer_id, status, total, ...)
+order_items (...)

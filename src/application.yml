@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ecommerce
+    username: ecommerce
+    password: secret
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        # Para multi-tenant con discriminator (alternativa a schema)
+        multiTenancy: DISCRIMINATOR
+        tenant_identifier_resolver: com.ecommerce.shared.infrastructure.persistence.CurrentTenantIdentifierResolver
+
+app:
+  multi-tenant:
+    strategy: SHARED_DATABASE   # o SCHEMA_PER_TENANT

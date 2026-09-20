@@ -1,0 +1,8 @@
+Ruta,Descripción
+/,Home (hero + destacados + categorías)
+/c/:categorySlug,Grid de productos por categoría
+/p/:productSlug,Detalle de producto
+/cart,Carrito
+/checkout,Checkout
+/account,Área de cliente
+/search,Búsqueda

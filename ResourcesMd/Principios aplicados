@@ -1,0 +1,21 @@
+Principios aplicados
+
+Hexagonal (Ports & Adapters)
+El dominio nunca conoce JPA, Redis, S3, etc.
+Interfaces (ports) en el dominio.
+Implementaciones (adapters) en infrastructure.
+
+DDD (Domain-Driven Design)
+Agregados: Product, Cart, Order, Tenant.
+Value Objects: Money, Sku, TenantId, Slug.
+Domain Events: ProductCreated, OrderPlaced, CartAbandoned.
+
+Modular Monolith (recomendado al inicio)
+Cada módulo es un bounded context.
+Comunicación entre módulos solo por eventos o interfaces públicas.
+Fácil de extraer a microservicios más adelante.
+
+Multi-tenancy
+Estrategia recomendada: Schema por tenant o Row-level con tenant_id + RLS de PostgreSQL.
+Para empezar: Shared Database + tenant_id + Row Level Security.
+Cada request lleva el TenantContext (ThreadLocal o contexto reactivo).

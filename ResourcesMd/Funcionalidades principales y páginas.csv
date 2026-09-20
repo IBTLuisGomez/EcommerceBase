@@ -1,0 +1,10 @@
+Página,Descripción
+/,"Home (banners, destacados, categorías)"
+/categoria/:slug,Listado por categoría (grid de tarjetas)
+/buscar?q=,Búsqueda
+/producto/:slug,Detalle de producto
+/carrito,Carrito de compras
+/checkout,Proceso de pago
+/cuenta,Área de cliente
+/pedidos,Historial de pedidos
+/login / /registro,Auth

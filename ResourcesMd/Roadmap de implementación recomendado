@@ -1,0 +1,22 @@
+Fase 1 – MVP vendible (8-12 semanas)
+
+Multi-tenancy + autenticación
+Catálogo (productos + categorías + grid)
+Carrito + checkout básico
+Subida de logo y tema
+Panel admin básico
+Pagos (Stripe / MercadoPago)
+
+Fase 2
+
+Inventario avanzado
+Cupones
+Envíos
+Analytics dashboard
+Notificaciones
+
+Fase 3
+
+Marketplace (opcional)
+App móvil
+Extracción de módulos a microservicios

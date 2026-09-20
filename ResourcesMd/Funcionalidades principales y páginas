@@ -1,0 +1,37 @@
+Página,Descripción
+/,"Home (banners, destacados, categorías)"
+/categoria/:slug,Listado por categoría (grid de tarjetas)
+/buscar?q=,Búsqueda
+/producto/:slug,Detalle de producto
+/carrito,Carrito de compras
+/checkout,Proceso de pago
+/cuenta,Área de cliente
+/pedidos,Historial de pedidos
+/login / /registro,Auth
+
+Admin (por tenant)
+
+Dashboard de ventas
+Gestión de productos (CRUD + imágenes)
+Categorías
+Pedidos
+Clientes
+Configuración de tienda (logo, colores, dominio, métodos de pago)
+Cupones / promociones
+
+Características multi-tenant clave
+
+Cada empresa (tenant) puede subir su logo y definir colores (CSS variables dinámicas).
+Dominio personalizado o subdominio (empresa.tutienda.com).
+Catálogo, precios, stock y pedidos aislados por tenant.
+Tema personalizable en tiempo real (ThemeProvider en React).
+
+Carrito de compras
+
+Backend: Carrito como agregado de dominio.
+Persistencia: Redis (rápido) + sincronización a PostgreSQL.
+Soporte de:
+Cantidad
+Variantes (talla, color…)
+Cupones
+Cálculo de impuestos y envío

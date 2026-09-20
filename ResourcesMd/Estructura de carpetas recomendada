@@ -1,0 +1,167 @@
+Estructura de carpetas recomendada (Backend - Spring Boot)
+
+src/main/java/com/tuempresa/ecommerce/
+├── EcommerceApplication.java
+├── shared/                          # Shared Kernel
+│   ├── domain/
+│   │   ├── TenantId.java
+│   │   ├── Money.java
+│   │   └── DomainEvent.java
+│   ├── application/
+│   └── infrastructure/
+│       ├── persistence/
+│       ├── security/
+│       └── config/
+│
+├── tenant/                          # Módulo de multi-tenancy
+│   ├── domain/
+│   ├── application/
+│   └── infrastructure/
+│
+├── catalog/                         # Productos + Categorías
+│   ├── domain/
+│   │   ├── Product.java
+│   │   ├── Category.java
+│   │   └── ProductRepository.java   # Port
+│   ├── application/
+│   │   ├── ProductService.java
+│   │   └── dto/
+│   └── infrastructure/
+│       ├── persistence/             # Adapter JPA
+│       └── web/                     # Controllers
+│
+├── cart/
+│   ├── domain/
+│   ├── application/
+│   └── infrastructure/
+│
+├── order/
+├── payment/
+├── inventory/
+├── customer/
+├── analytics/                       # Eventos para dashboard
+└── admin/
+
+Estructura completa de carpetas
+Backend (Spring Boot 3 + Java 21)
+ecommerce-platform/
+├── backend/
+│   ├── pom.xml
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/com/ecommerce/
+│   │   │   │   ├── EcommerceApplication.java
+│   │   │   │   │
+│   │   │   │   ├── shared/                          # Shared Kernel
+│   │   │   │   │   ├── domain/
+│   │   │   │   │   │   ├── TenantId.java
+│   │   │   │   │   │   ├── Money.java
+│   │   │   │   │   │   ├── DomainEvent.java
+│   │   │   │   │   │   └── AggregateRoot.java
+│   │   │   │   │   ├── application/
+│   │   │   │   │   └── infrastructure/
+│   │   │   │   │       ├── config/
+│   │   │   │   │       ├── security/
+│   │   │   │   │       ├── persistence/
+│   │   │   │   │       └── web/
+│   │   │   │   │
+│   │   │   │   ├── tenant/                          # Bounded Context: Tenant
+│   │   │   │   │   ├── domain/
+│   │   │   │   │   │   ├── Tenant.java
+│   │   │   │   │   │   ├── TenantRepository.java   # Port
+│   │   │   │   │   │   └── ThemeConfig.java
+│   │   │   │   │   ├── application/
+│   │   │   │   │   │   ├── TenantService.java
+│   │   │   │   │   │   └── dto/
+│   │   │   │   │   └── infrastructure/
+│   │   │   │   │       ├── persistence/
+│   │   │   │   │       └── web/
+│   │   │   │   │
+│   │   │   │   ├── catalog/                         # Productos + Categorías
+│   │   │   │   │   ├── domain/
+│   │   │   │   │   │   ├── Product.java
+│   │   │   │   │   │   ├── Category.java
+│   │   │   │   │   │   ├── ProductRepository.java
+│   │   │   │   │   │   └── CategoryRepository.java
+│   │   │   │   │   ├── application/
+│   │   │   │   │   └── infrastructure/
+│   │   │   │   │
+│   │   │   │   ├── cart/
+│   │   │   │   │   ├── domain/
+│   │   │   │   │   │   ├── Cart.java
+│   │   │   │   │   │   ├── CartItem.java
+│   │   │   │   │   │   └── CartRepository.java
+│   │   │   │   │   ├── application/
+│   │   │   │   │   └── infrastructure/
+│   │   │   │   │
+│   │   │   │   ├── order/
+│   │   │   │   │   ├── domain/
+│   │   │   │   │   │   ├── Order.java
+│   │   │   │   │   │   ├── OrderItem.java
+│   │   │   │   │   │   ├── OrderStatus.java
+│   │   │   │   │   │   └── OrderRepository.java
+│   │   │   │   │   ├── application/
+│   │   │   │   │   └── infrastructure/
+│   │   │   │   │
+│   │   │   │   └── analytics/
+│   │   │   │
+│   │   │   └── resources/
+│   │   │       ├── application.yml
+│   │   │       ├── db/migration/                    # Flyway
+│   │   │       │   └── V1__init.sql
+│   │   │       └── logback-spring.xml
+│   │   │
+│   │   └── test/
+│   │       └── java/... (Testcontainers, etc.)
+
+Frontend (React + TypeScript + Vite)
+
+ecommerce-platform/
+├── frontend/
+│   ├── package.json
+│   ├── vite.config.ts
+│   ├── tsconfig.json
+│   ├── tailwind.config.js
+│   ├── src/
+│   │   ├── main.tsx
+│   │   ├── App.tsx
+│   │   │
+│   │   ├── theme/                           # Theme Engine
+│   │   │   ├── ThemeProvider.tsx
+│   │   │   ├── useTheme.ts
+│   │   │   └── types.ts
+│   │   │
+│   │   ├── features/
+│   │   │   ├── catalog/
+│   │   │   │   ├── components/
+│   │   │   │   │   ├── ProductCard.tsx
+│   │   │   │   │   ├── ProductGrid.tsx
+│   │   │   │   │   └── CategoryList.tsx
+│   │   │   │   ├── pages/
+│   │   │   │   │   ├── HomePage.tsx
+│   │   │   │   │   ├── CategoryPage.tsx
+│   │   │   │   │   └── ProductDetailPage.tsx
+│   │   │   │   └── api/
+│   │   │   │
+│   │   │   ├── cart/
+│   │   │   │   ├── components/
+│   │   │   │   │   ├── CartDrawer.tsx
+│   │   │   │   │   └── CartItem.tsx
+│   │   │   │   ├── pages/
+│   │   │   │   │   └── CheckoutPage.tsx
+│   │   │   │   └── store/ (Zustand o Redux)
+│   │   │   │
+│   │   │   ├── admin/
+│   │   │   │   └── ...
+│   │   │   │
+│   │   │   └── auth/
+│   │   │
+│   │   ├── shared/
+│   │   │   ├── components/
+│   │   │   ├── hooks/
+│   │   │   ├── api/ (axios + interceptors)
+│   │   │   └── types/
+│   │   │
+│   │   └── layouts/
+│   │       ├── StoreLayout.tsx
+│   │       └── AdminLayout.tsx

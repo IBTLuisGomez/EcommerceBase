@@ -1,0 +1,10 @@
+Capa,Tecnología
+Frontend,React 18 + TypeScript + Vite + Tailwind + Zustand + React Router
+Backend,Java 21 + Spring Boot 3.3+
+Base de datos,PostgreSQL 16 (Shared Schema + RLS)
+Cache / Carrito,Redis
+Archivos,MinIO / AWS S3
+Auth,Spring Security + JWT
+Testing,JUnit 5 + Testcontainers + Playwright
+Logs,Logback JSON + tenant_id + trace_id
+Analytics,Domain Events + tablas agregadas + Tremor / Metabase

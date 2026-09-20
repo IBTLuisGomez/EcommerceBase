@@ -1,0 +1,70 @@
+ecommerce-saas/
+├── backend/
+│   ├── pom.xml
+│   ├── src/main/java/com/ecommerce/
+│   │   ├── EcommerceApplication.java
+│   │   │
+│   │   ├── shared/                                 # Shared Kernel
+│   │   │   ├── domain/
+│   │   │   │   ├── TenantId.java
+│   │   │   │   ├── Money.java
+│   │   │   │   ├── AggregateRoot.java
+│   │   │   │   └── DomainEvent.java
+│   │   │   ├── application/
+│   │   │   └── infrastructure/
+│   │   │       ├── config/
+│   │   │       ├── security/
+│   │   │       ├── multitenancy/                   # TenantContext + Filter + RLS
+│   │   │       ├── persistence/
+│   │   │       └── web/
+│   │   │
+│   │   ├── tenant/                                 # Bounded Context: Identity & Tenant
+│   │   │   ├── domain/
+│   │   │   │   ├── Tenant.java
+│   │   │   │   ├── ThemeConfig.java
+│   │   │   │   ├── TenantStatus.java
+│   │   │   │   └── TenantRepository.java          # Port
+│   │   │   ├── application/
+│   │   │   │   ├── GetTenantConfigUseCase.java
+│   │   │   │   ├── UpdateThemeUseCase.java
+│   │   │   │   └── dto/
+│   │   │   └── infrastructure/
+│   │   │       ├── persistence/
+│   │   │       └── web/                            # /api/v1/tenant/config
+│   │   │
+│   │   ├── catalog/                                # Bounded Context: Catalog
+│   │   │   ├── domain/
+│   │   │   │   ├── Product.java
+│   │   │   │   ├── Category.java
+│   │   │   │   ├── ProductRepository.java
+│   │   │   │   └── CategoryRepository.java
+│   │   │   ├── application/
+│   │   │   │   ├── CreateProductUseCase.java
+│   │   │   │   ├── ListProductsUseCase.java
+│   │   │   │   └── dto/
+│   │   │   └── infrastructure/
+│   │   │
+│   │   ├── cart/                                   # Bounded Context: Cart & Checkout
+│   │   │   ├── domain/
+│   │   │   │   ├── Cart.java
+│   │   │   │   ├── CartItem.java
+│   │   │   │   └── CartRepository.java
+│   │   │   ├── application/
+│   │   │   └── infrastructure/
+│   │   │
+│   │   ├── order/                                  # Bounded Context: Order Fulfillment
+│   │   │   ├── domain/
+│   │   │   │   ├── Order.java
+│   │   │   │   ├── OrderItem.java
+│   │   │   │   ├── OrderStatus.java
+│   │   │   │   └── OrderRepository.java
+│   │   │   ├── application/
+│   │   │   └── infrastructure/
+│   │   │
+│   │   └── analytics/                              # Bounded Context: Analytics
+│   │
+│   └── src/main/resources/
+│       ├── application.yml
+│       ├── db/migration/
+│       │   └── V1__init_schema.sql
+│       └── logback-spring.xml

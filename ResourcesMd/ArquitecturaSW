@@ -1,0 +1,11 @@
+Capa,Tecnología,Justificación
+Frontend,React 18 + TypeScript + Vite + Tailwind + Shadcn/ui,"Rápido, moderno, excelente DX, fácil de personalizar por tenant"
+Backend,Spring Boot 3 + Java 21,"Maduro, fuerte en enterprise, excelente para hexagonal + DDD"
+Base de datos,PostgreSQL 16,"Multi-tenant nativo, JSONB, excelente rendimiento"
+Cache,Redis,"Sesiones, carrito, catálogo"
+Mensajería,RabbitMQ / Kafka (opcional),Eventos de dominio
+Auth,Keycloak o Spring Security + JWT,Multi-tenant seguro
+Almacenamiento,MinIO / S3,"Logos, imágenes de productos"
+Observabilidad,OpenTelemetry + ELK / Grafana Loki,Logs estructurados
+Dashboard analítica,Metabase o Apache Superset + eventos,Análisis de ventas
+Tests,JUnit 5 + Testcontainers + Playwright,Unit + Integration + E2E

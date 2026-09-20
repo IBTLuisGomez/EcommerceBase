@@ -1,0 +1,52 @@
+ecommerce-saas/
+├── frontend/
+│   ├── package.json
+│   ├── vite.config.ts
+│   ├── tailwind.config.js
+│   ├── src/
+│   │   ├── main.tsx
+│   │   ├── App.tsx
+│   │   │
+│   │   ├── theme/                                  # Theme Engine
+│   │   │   ├── ThemeProvider.tsx
+│   │   │   ├── useTheme.ts
+│   │   │   └── types.ts
+│   │   │
+│   │   ├── features/
+│   │   │   ├── catalog/
+│   │   │   │   ├── components/
+│   │   │   │   │   ├── ProductCard.tsx
+│   │   │   │   │   ├── ProductGrid.tsx
+│   │   │   │   │   └── CategoryNav.tsx
+│   │   │   │   ├── pages/
+│   │   │   │   │   ├── HomePage.tsx
+│   │   │   │   │   ├── CategoryPage.tsx
+│   │   │   │   │   └── ProductDetailPage.tsx
+│   │   │   │   └── api/
+│   │   │   │
+│   │   │   ├── cart/
+│   │   │   │   ├── components/
+│   │   │   │   ├── pages/
+│   │   │   │   │   ├── CartPage.tsx
+│   │   │   │   │   └── CheckoutPage.tsx
+│   │   │   │   └── store/                          # Zustand
+│   │   │   │
+│   │   │   ├── admin/
+│   │   │   │   ├── pages/
+│   │   │   │   │   ├── DashboardPage.tsx
+│   │   │   │   │   ├── ProductsPage.tsx
+│   │   │   │   │   ├── OrdersPage.tsx
+│   │   │   │   │   └── BrandingPage.tsx
+│   │   │   │   └── components/
+│   │   │   │
+│   │   │   └── auth/
+│   │   │
+│   │   ├── shared/
+│   │   │   ├── api/                                # Axios + Tenant Interceptor
+│   │   │   ├── components/
+│   │   │   ├── hooks/
+│   │   │   └── types/
+│   │   │
+│   │   └── layouts/
+│   │       ├── StoreLayout.tsx                     # Header con logo dinámico
+│   │       └── AdminLayout.tsx

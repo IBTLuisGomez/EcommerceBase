@@ -1,0 +1,9 @@
+Logging
+// Structured logging con MDC
+MDC.put("tenantId", tenantId);
+MDC.put("userId", userId);
+MDC.put("requestId", requestId);
+log.info("Order placed", kv("orderId", orderId), kv("amount", amount));
+
+Stack: Logback + JSON + ELK o Grafana Loki + OpenTelemetry.
+

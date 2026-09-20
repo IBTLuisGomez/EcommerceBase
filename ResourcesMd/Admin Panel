@@ -1,0 +1,6 @@
+Ruta,Descripción
+/admin/dashboard,KPIs + gráficas
+/admin/products,CRUD productos
+/admin/orders,Gestión de órdenes
+/admin/branding,Logo + colores + tipografía
+/admin/settings,Configuración general
